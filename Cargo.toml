@@ -1,5 +1,13 @@
 [package]
 name = "analog"
-description = "(shell) scripting language"
 version = "0.0.0"
 authors = ["Philip Koperski <philip@pretzelwagon.com>"]
+edition = "2018"
+license = "Unlicense"
+
+description = "An analogical (shell) scripting language"
+keywords = ["shell", "script", "scripting", "language"]
+
+homepage = "https://github.com/asvln/analog"
+repository = "https://github.com/asvln/analog"
+documentation = "https://github.com/asvln/analog"
