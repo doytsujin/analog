@@ -1,0 +1,5 @@
+[package]
+name = "analog"
+description = "(shell) scripting language"
+version = "0.0.0"
+authors = ["Philip Koperski <philip@pretzelwagon.com>"]
