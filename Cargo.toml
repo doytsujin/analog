@@ -1,12 +1,12 @@
 [package]
 name = "analog"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Philip Koperski <philip@pretzelwagon.com>"]
 edition = "2018"
 license = "Unlicense"
 
-description = "An analogical (shell) scripting language"
-keywords = ["shell", "script", "scripting", "language"]
+description = "Analogous syntax for the Rust programming language."
+keywords = ["language"]
 
 homepage = "https://github.com/asvln/analog"
 repository = "https://github.com/asvln/analog"

@@ -1,196 +1,474 @@
-analog reference
-----------------
+analog Reference
+================
 
-For detailed information please consult the [documentation](./docs.md).
+Statements
+----------
 
+```rust
+~     ~ comment
+=     ~ variable
+==    ~ const
 
-### Functions
+:=    ~ fn
+:==   ~ const fn
+:     ~ fn call
 
-```bash
-# declaration
-print_var x = :: x
+@=    ~ struct/enum
+@:    ~ impl
+@@    ~ type
+@@@   ~ trait
 
-# call
-print_var "pancakes"
++     ~ use
+++    ~ pub use
++=    ~ mod
+
+?     ~ if
+??    ~ match
+?=    ~ if let
+
+||    ~ loop
+|n|   ~ for
+|?|   ~ while
+|?= | ~ while let
+
+::  ~ println!
+:.  ~ print!
+:;  ~ eprintln!
+:,  ~ eprint!
 ```
 
+Comments
+--------
 
-### Variables
+```rust
+~ line comment
+= pi 3.1416 ~ inline comment
 
-```bash
-f = "str"       # string
-f = 'c'         # char
-f = 42          # int
-f = 3.14        # float
-f = [ 1 2 3 ]   # array
-#f = { k:v h:p } # hash map
+~* block comment *~
+
+~! inner line doc
+~*! inner block doc *~
+
+~~ outer line doc
+~** outer block doc *~
 ```
 
+Functions
+---------
 
-### Aliases
+```rust
+~ declaration
+:= say
+    :: "Hi"
 
-```bash
-@true       # truthy type variant
-@false      # falsy type variant
+~ with args
+:= say_it a &str b &str
+    :: "{} {} are!" a b
 
-@&          # shell command status code
-@cmd        # [ @& "stdout" "stderr" ]
+~ call
+:say
+:say_it "there" "you"
+:say_it
+    "indented"
+    "we"
+
+~ return a value
+:= get_number >> u64
+    > 32367482
+
+~ indented parameters
+:= see
+    < a &str
+    < b &str
+    :: "{} {}" a b
+
+~ where clause
+:= see T E >> @Display
+    < t T
+    < u U
+    <<< T @ Display
+        U @ Display Clone
+    :: "all {}" all
+    all
+
 ```
 
+### Methods/Closures
 
-### Printing
+```rust
+~ inline
+:var.iter.map \a\ :fn a :fn b .and.unwrap
 
-```bash
-:: "print to stdout"
-:; "print without newline "
-:: 3
-
-:: "Newlines can be added with indentation,
-    and they will be nicely aligned.
-
-    You may also use ...\n
-    \t\"escape characters\"
-
-    Indentation of nesting will be ignored...
-        but extra whitespace is acknowledged."
+~ indented
+:var.iter
+    .map \a\
+        :fn a
+        :fn b
+    .and
+    .unwrap
 ```
 
+Literals
+--------
 
-### Array Printing
-
-```bash
-letters = [ 'a' 'b' 'c' ]
-
-print_abc =
-    :: ":: " [ letters ] # newline separated
-    :: [ ":: " letters ] # anything within brackets will iterate
-    ;: ";;" [ letters ]  # prevent newlines during iteration
+```rust
+true      ~ bool
+"str"     ~ char
+"string"  ~ String
+42        ~ i32
+3.14      ~ f64
 ```
 
+`[]`
+----
 
-### Escaping
-
-These will match standard Rust escape codes with the addition of `\!`.
-
-```bash
-\n  # Newline
-\r  # Carriage return
-\t  # Tab
-\"  # Double quote
-\!  # Exclamation
-\\  # Backslash
-\0  # Null
+```rust
+[]    ~ array
+&[]   ~ slice
+![]   ~ Vec
 ```
 
+### Array / Slice / Vec
+```rust
 
-### Integer Operators
+= array [i32 4]
+    1 2 3 4
 
-```bash
-num = 3
+= slice &[]
+    1 2 3 4
 
-++ num  # increment by 1
--- num  # decrement by 1
+= vec ![]
+    1 2 3 4
+
+:: vec[0]
 ```
 
+`{}`
+----
 
-### Shell Commands
+### Unit
 
-```bash
-# runs command
-(cmd)   # returns @cmd
-&(cmd)  # returns @&
-!(cmd)  # returns stdout as string
-!!(cmd) # returns stderr as string
-
-# returns @true if status code is 0
-?(cmd)
-
-# silence stdout
-(cmd);
-
-# redirection and piping
-(cmd < stdin > stdout &> stderr)
-(cmd1 | cmd2)
-
-# grouping commands, returns [@cmd]
-(cmd (1) (2) ) # short circuiting
-[cmd (1) (2) ] # all commands are run asynchronously
-
-# interpolation
-cache = "~/.cache/analog"
-(rm -rf !cache!)
+```rust
+= unit {}
 ```
 
+### Tuple
 
-### If / Else
+```rust
+= tuple {"an" 8}
 
-```bash
-day = "day"
-suns = 2
+= tuple {&str u8}
+    "an" 8
+
+:: tuple.0
+```
+
+### Tuple Struct
+
+```rust
+@= Planet {&str u8}
+
+= third Planet
+    "Earth" 3
+
+:: third.0
+```
+
+### Struct
+
+```rust
+@= Door {}
+    key &str
+    num u8
+
+= access Door
+    key "value"
+    num 82
+
+:: access.key
+```
+
+`<>`
+----
+
+```rust
+<>    ~ Option<>
+?<>   ~ Result<T E>
+0<>   ~ Ok<>
+!<>   ~ Err<>
+```
+
+### Enum
+
+```rust
+@= Action <>
+    Refresh
+    Flip
+    KeyPress {char}
+    Click {}
+        x i64
+        y i64
+
+= flips Action<Flip>
+= press Action<KeyPress> "v"
+= click Action<Click> x 8.3 y 1.3
+```
+
+### Option
+
+```rust
+= some <53>
+= none <>
+```
+
+### Result
+
+```rust
+= ok     %<>
+= err    !<>
+
+:= result >> ?<&str {}>
+    ? 22
+        22 > ?<"catch">
+        ^  > !{}
+```
+
+`?`
+---
+
+### If Else
+
+```rust
+= day "day"
+= suns 2
 
 ? day == "night"
     :: "uh oh..."
-    %? suns >> 1
+    ^? suns > 1
         :: "whew!"
-    %: "logical."
+    ^: "logical"
 ```
 
+### If Let
+
+```rust
+= num <7>
+
+?= <n> num
+    :: "matched " n
+```
 
 ### Match
 
-```bash
-# string
+```rust
+~ true/false
+= motion true
 
-hardwoods = [ "oak" "maple" "cherry" "walnut" ]
-softwoods = [ "spruce" "pine" "cedar" "yew" ]
+? motion
+    :: "we are moving!"
+    ^: "we are still"
 
-? "pine"
-    == [ hardwoods ] :: "is a hardwood"
-    == [ softwoods ] :: "is a softwood"
-    == "bamboo" :: "good stuff..."
-    %: "plant more trees!"
+~ shell command
+? (uname)
+    :: "command succeeded!"
+    ^: "command failed"
+```
 
-# integer and float
-num = 9
+```rust
+~ number
+= num 9
 
 ? num
     <= 5 :: "less than or is 5"
-    >> 6 :: "more than 6"
-    == 6 :: 6
-
-# true/false
-?(uname)
-    :: "command succeeded!"
-    %: "command failed"
-
-# status code check`
-```bash
-?(uname)
-    :: "command succeeded"
-    %: "command failed"
+    >  6 :: "more than 6"
+    == 6 :: num
 ```
 
+```rust
+~ enum
+@= Arrow <>
+    Left
+    Up
+    Down
+    Right
+
+= input Arrow<Up>
+
+? input
+    Up   :: "only one way"
+    Down :: "nothing here"
+    ^    :: "imaginary spectrum"
+```
+
+```rust
+~ iterative string
+= hardwoods [] "oak" "maple" "cherry" "walnut"
+= softwoods [] "spruce" "pine" "cedar" "yew"
+
+? "pine"
+    [ hardwoods ] :: "is a hardwood"
+    [ softwoods ] :: "is a softwood"
+    "bamboo" :: "good stuff"
+    ^: "plant more trees!"
+```
+
+`|`
+---
+
+### Loop
+
+```rust
+||
+    = $count 1
+    ? $count == 3
+        :: "three"
+        >>>
+    :: "{}" count
+    ? count == 5
+        :: "no more needed"
+        <<<
+```
+
+### While
+
+```rust
+= $num 1
+
+|?| $n << 3
+    :: $n
+    $n + 1
+    ^: "reached 3"
+```
 
 ### For
 
-```bash
-nums = [ 1 2 3 ]
+```rust
+= nums []
+    1 2 3
 
 |n| nums
     :: n
     ? n == 3 :: "number 3 is in the list"
 ```
 
+### Printing
 
-### While
+```rust
+:: "println"
+:. "print"
+:; "eprintln"
+:, "eprint"
 
-```bash
-num = 1
+:: "Newlines can be added with indentation,
+    and they will be nicely aligned"
 
-|?| n << 3
-    :: n
-    ++ 1
-    %: "reached 3"
+:: """ var1 var2
+    You can always use ...\n
+    \t\"escape characters\"
+
+    {var2} {var2}
+
+    Indentation of nesting will be ignored...
+        but extra whitespace is acknowledged.
 ```
 
+Symbology
+--------
 
+### Keywords
+
+From Rust:
+
+```rust
+as       ~ @
+async    ~
+await    ~
+break    ~ <<<
+const    ~ ==
+continue ~ >>>
+crate    ~
+dyn      ~
+else     ~ ^
+enum     ~ @= Enum <>
+extern   ~
+false    ~ false
+fn       ~ :=
+for      ~ |n|
+if       ~ ?
+impl     ~ @:
+in       ~ implied
+let      ~ =
+loop     ~ ||
+match    ~ ??
+mod      ~ +=
+move     ~ /x\
+mut      ~ $
+pub      ~ +
+ref      ~ &!
+return   ~ >
+self     ~ self
+Self     ~ Self
+static   ~
+struct   ~ @= Struct {}
+super    ~ super
+trait    ~ @@@
+true     ~ true
+type     ~ @@
+union    ~
+unsafe   ~
+use      ~ +
+where    ~ <<<
+while    ~ |?|
+```
+
+From symbol:
+
+```rust
+~ comment
+` lifetime/label
+! macro
+@ struct/enum/impl/type/trait
+#
+$ mut
+%
+^ else/catch-all
+& reference
+* dereference
+<
+> return
++ pub/use/mod
+= variable/const
+, namespace chaining
+. method chaining
+/
+? if/match
+\
+| loop/while/for
+;
+: function
+'
+" string
+
+() expression grouping
+[] growable collection
+{} custom collection
+<> monad
+```
+
+### Items
+
+```rust
++=  ~ mod
+    ~ extern crate
++   ~ use
+:=  ~ fn
+@@  ~ type
+@=  ~ struct
+@=  ~ enum
+    ~ union
+==  ~ const
+    ~ static
+@@@ ~ trait
+@:  ~ impl
+    ~ extern
+```

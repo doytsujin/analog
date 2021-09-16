@@ -1,29 +1,30 @@
 analog
-------
+======
 
-`analog` could be an analogical (shell) scripting language.
+`analog` is an analogous syntax for the Rust programming language.
 
-```bash
-b = 99
+```rust
+= $door_open [false; 100]
+|pass| 1..101
+    = $door pass
+    |?| $door <= 100
+        $door_open[door - 1] !$door_open[door - 1]
+        $door += pass;
 
-|?| b >> 0
-    :: b "bottles of ink on the wall."
-       b "bottles of ink.
-       Take one down
-            scribble around..."
-    -- b
-    :: b "bottles of ink on the wall."
-    % (sudo reboot)
+|i &is_open| $door_open.iter.enumerate
+    :: "Door {} is {}."
+        (i + 1)
+        ? is_open "open" ^ "closed"
 ```
 
+Documentation
+-------------
 
-### Documentation
+To learn about the syntax, consult the [documentation](./docs/docs.md).
 
-Look at the [documentation](./docs/docs.md) for a detailed introduction to the language.
+The [reference](./docs/reference.md) provides a comprehensive overview.
 
-The [reference](./docs/reference.md) provides a simplified overview.
-
-
-### Contributing
+Contributing
+------------
 
 This is free and unencumbered software released into the public domain, as are all contributions.
