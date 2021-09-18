@@ -16,7 +16,7 @@ analog
     println!
         "Door {} is {}.",
         (i + 1),
-        ?? is_open "open" % "closed"
+        ?? is_open "open" !! "closed"
 ```
 
 Documentation

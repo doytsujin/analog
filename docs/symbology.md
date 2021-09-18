@@ -21,8 +21,9 @@ analog Symbology
 ++=    ~ pub mod
 
 ??     ~ if
-???    ~ match
 ??=    ~ if let
+!!     ~ else
+???    ~ match
 
 ||     ~ loop
 |n|    ~ for
@@ -47,7 +48,7 @@ const    ~ ==
 continue ~ >>>
 crate    ~
 dyn      ~
-else     ~ %
+else     ~ !!
 enum     ~ #=
 extern   ~
 false    ~ false
@@ -89,7 +90,7 @@ From symbol:
 #   ~ struct/enum/impl/type/trait
 #   ~
 $   ~ mut
-%   ~ else
+!   ~
 ^   ~
 &   ~ reference
 *   ~ dereference

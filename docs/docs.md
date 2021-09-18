@@ -15,7 +15,6 @@ Here is a general overview of which concepts relate to which symbols...
 +   ~ pub
 
 ?   ~ conditional
-%   ~ else
 |   ~ looping
 
 ~   ~ comment
@@ -627,14 +626,14 @@ There are `if` statements and `match` statements.
 When a line begins with a `??`:
 
 - `??` can be read as "if"
-- `%` can be read as "else"
+- `!!` can be read as "else"
 
 ```rust
 = num 8
 
 ?? num == 12
     println!("looks like you")
-%
+!!
     println!("differentation")
 ```
 
@@ -644,9 +643,9 @@ When a line begins with a `??`:
 
 ?? "night" == day
     println!("uh oh...")
-% ?? suns > 1
+!! ?? suns > 1
     println!("whew!")
-%
+!!
     println!("logical.")
 ```
 
