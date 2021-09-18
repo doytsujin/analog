@@ -1,11 +1,11 @@
 [package]
 name = "analog"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Philip Koperski <philip@pretzelwagon.com>"]
 edition = "2018"
 license = "Unlicense"
 
-description = "Analogous syntax for the Rust programming language."
+description = "Analogous, indented syntax for the Rust programming language."
 keywords = ["language"]
 
 homepage = "https://github.com/asvln/analog"
